@@ -2,52 +2,40 @@ import useHandleResponse from '../Utilities/handle-response';
 import authHeader from '../Utilities/auth-header';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
+
 // Receive global messages
 export function useGetGlobalMessages() {
     const { enqueueSnackbar } = useSnackbar();
     const handleResponse = useHandleResponse();
-    const requestOptions = {
-        headers: authHeader(),
-    };
     const getGlobalMessages = () => {
-        return axios.get(
-            `${process.env.REACT_APP_API_URL}/api/messages/global`,
-            requestOptions
-        )
-            .then(handleResponse)
-            .catch(() =>
-                enqueueSnackbar('Could not load Global Chat', {
-                    variant: 'error',
-                })
-            );
-    };
-
+        try {
+            return axios.get(`${process.env.REACT_APP_API_URL}/api/messages/global`, { headers: authHeader() })
+                .then(handleResponse)
+        } catch (error) {
+            enqueueSnackbar('Could not load Global Chat', {
+                variant: 'error',
+            });
+        }
+    }
     return getGlobalMessages;
 }
-
 // Send a global message
 export function useSendGlobalMessage() {
     const { enqueueSnackbar } = useSnackbar();
     const handleResponse = useHandleResponse();
-
     const sendGlobalMessage = body => {
-        const requestOptions = {
-            headers: authHeader(),
-        };
-
-        return axios.get(
-            `${process.env.REACT_APP_API_URL}/api/messages/global`, body,
-            requestOptions
-        )
-        // .then(handleResponse)
-        // .catch(err => {
-        //     console.log(err);
-        //     enqueueSnackbar('Could send message', {
-        //         variant: 'error',
-        //     });
-        // });
+        try {
+            return axios.post(
+                `${process.env.REACT_APP_API_URL}/api/messages/global`, body,
+                { headers: authHeader() }
+            )
+                .then(handleResponse)
+        } catch (error) {
+            enqueueSnackbar('Could send message', {
+                variant: 'error',
+            });
+        }
     };
-
     return sendGlobalMessage;
 }
 
@@ -55,22 +43,18 @@ export function useSendGlobalMessage() {
 export function useGetConversations() {
     const { enqueueSnackbar } = useSnackbar();
     const handleResponse = useHandleResponse();
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader(),
-    };
-
     const getConversations = () => {
-        return fetch(
-            `${process.env.REACT_APP_API_URL}/api/messages/conversations`,
-            requestOptions
-        )
-            .then(handleResponse)
-            .catch(() =>
-                enqueueSnackbar('Could not load chats', {
-                    variant: 'error',
-                })
-            );
+        try {
+            return axios.get(
+                `${process.env.REACT_APP_API_URL}/api/messages/conversations`,
+                { headers: authHeader() }
+            )
+                .then(handleResponse)
+        } catch (error) {
+            enqueueSnackbar('Could not load chats', {
+                variant: 'error',
+            });
+        }
     };
 
     return getConversations;
@@ -81,50 +65,34 @@ export function useGetConversations() {
 export function useGetConversationMessages() {
     const { enqueueSnackbar } = useSnackbar();
     const handleResponse = useHandleResponse();
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader(),
-    };
-
     const getConversationMessages = id => {
-        return fetch(
-            `${process.env.REACT_APP_API_URL
-            }/api/messages/conversations/query?userId=${id}`,
-            requestOptions
-        )
-            .then(handleResponse)
-            .catch(() =>
-                enqueueSnackbar('Could not load chats', {
-                    variant: 'error',
-                })
-            );
-    };
-
+        try {
+            return axios.get(`${process.env.REACT_APP_API_URL}/api/messages/conversations/query?userId=${id}`,
+                { headers: authHeader() })
+                .then(handleResponse)
+        }
+        catch (error) {
+            enqueueSnackbar('Could not load chats', {
+                variant: 'error',
+            });
+        };
+    }
     return getConversationMessages;
 }
 
 export function useSendConversationMessage() {
     const { enqueueSnackbar } = useSnackbar();
     const handleResponse = useHandleResponse();
-
     const sendConversationMessage = (id, body) => {
-        const requestOptions = {
-            method: 'POST',
-            headers: authHeader(),
-            body: JSON.stringify({ to: id, body: body }),
-        };
-
-        return fetch(
-            `${process.env.REACT_APP_API_URL}/api/messages/`,
-            requestOptions
-        )
-            .then(handleResponse)
-            .catch(err => {
-                console.log(err);
-                enqueueSnackbar('Could send message', {
-                    variant: 'error',
-                });
+        try {
+            return axios.post(`${process.env.REACT_APP_API_URL}/api/messages/`, { to: id, body: body },
+                { headers: authHeader() })
+                .then(handleResponse)
+        } catch (error) {
+            enqueueSnackbar('Could not send message', {
+                variant: 'error',
             });
+        }
     };
 
     return sendConversationMessage;

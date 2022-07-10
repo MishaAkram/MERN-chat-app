@@ -59,12 +59,12 @@ const Chat = () => {
                                 <Tab label="Users" />
                             </Tabs>
                         </Paper>
-                        {/* {tab === 0 && (
-                            // <Conversations
-                            //     setUser={setUser}
-                            //     setScope={setScope}
-                            // />
-                        )} */}
+                        {tab === 0 && (
+                            <Conversations
+                                setUser={setUser}
+                                setScope={setScope}
+                            />
+                        )}
                         {tab === 1 && (
                             <Users setUser={setUser} setScope={setScope} />
                         )}
