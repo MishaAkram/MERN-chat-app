@@ -109,8 +109,10 @@ const ChatBox = (props) => {
 
   const reloadMessages = () => {
     if (props.scope === "Global Chat") {
-      getGlobalMessages().then((res) => {
-        setMessages(res);
+      getGlobalMessages()
+      .then((res) => {
+        console.log(res)
+        setMessages(res.data);
       });
     } else if (props.scope !== null && props.conversationId !== null) {
       getConversationMessages(props.user._id).then((res) => setMessages(res));
