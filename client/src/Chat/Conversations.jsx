@@ -8,8 +8,7 @@ import LanguageIcon from "@material-ui/icons/Language";
 import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
 import socketIOClient from "socket.io-client";
-
-import { useGetConversations } from "../Services/chatService";
+import { useGetPostMessages } from "../Services/chatService";
 import { authenticationService } from "../Services/authenticationService";
 import commonUtilites from "../Utilities/common";
 
@@ -35,8 +34,7 @@ const Conversations = (props) => {
   const classes = useStyles();
   const [conversations, setConversations] = useState([]);
   const [newConversation, setNewConversation] = useState(null);
-  const getConversations = useGetConversations();
-
+  const { getConversations } = useGetPostMessages();
   // Returns the recipient name that does not
   // belong to the current user.
   const handleRecipient = (recipients) => {
@@ -52,7 +50,7 @@ const Conversations = (props) => {
   };
 
   useEffect(() => {
-    getConversations().then((res) => setConversations(res));
+    getConversations().then((res) => setConversations(res.data));
   }, [newConversation]);
 
   useEffect(() => {

@@ -14,12 +14,7 @@ import Paper from "@material-ui/core/Paper";
 import socketIOClient from "socket.io-client";
 import classnames from "classnames";
 import commonUtilites from "../Utilities/common";
-import {
-  useGetGlobalMessages,
-  useSendGlobalMessage,
-  useGetConversationMessages,
-  useSendConversationMessage,
-} from "../Services/chatService";
+import { useGetPostMessages } from "../Services/chatService";
 import { authenticationService } from "../Services/authenticationService";
 
 const useStyles = makeStyles((theme) => ({
@@ -88,12 +83,7 @@ const ChatBox = (props) => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [lastMessage, setLastMessage] = useState(null);
-
-  const getGlobalMessages = useGetGlobalMessages();
-  const sendGlobalMessage = useSendGlobalMessage();
-  const getConversationMessages = useGetConversationMessages();
-  const sendConversationMessage = useSendConversationMessage();
-
+  const { getGlobalMessages, sendGlobalMessage, getConversationMessages, sendConversationMessage } = useGetPostMessages();
   let chatBottom = useRef(null);
   const classes = useStyles();
 
@@ -109,9 +99,11 @@ const ChatBox = (props) => {
 
   const reloadMessages = () => {
     if (props.scope === "Global Chat") {
-      getGlobalMessages().then((res) => {
-        setMessages(res);
-      });
+      getGlobalMessages()
+        .then((res) => {
+          console.log(res)
+          setMessages(res.data);
+        });
     } else if (props.scope !== null && props.conversationId !== null) {
       getConversationMessages(props.user._id).then((res) => setMessages(res));
     } else {
