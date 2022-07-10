@@ -16,7 +16,4 @@ const useHandleResponse = () => {
         }
         return response
     }
-    return handleResponse;
-};
-
-export default useHandleResponse;
+    }

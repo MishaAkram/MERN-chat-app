@@ -83,9 +83,7 @@ const ChatBox = (props) => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [lastMessage, setLastMessage] = useState(null);
-
   const { getGlobalMessages, sendGlobalMessage, getConversationMessages, sendConversationMessage } = useGetPostMessages();
-
   let chatBottom = useRef(null);
   const classes = useStyles();
 

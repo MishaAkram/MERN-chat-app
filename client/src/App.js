@@ -4,12 +4,10 @@ import { createTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/styles';
 import { SnackbarProvider } from 'notistack';
-
 import history from './Utilities/history';
 import PrivateRoute from './Utilities/private-route';
 import Home from './Home/Home';
 import Chat from './Chat/Chat';
-
 const theme = createTheme({
     palette: {
         primary: {
