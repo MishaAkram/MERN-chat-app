@@ -4,7 +4,7 @@ import { useSnackbar } from 'notistack';
 import axios from 'axios';
 
 // Receive global messages
-export function useGetGlobalMessages() {
+export function useGetPostMessages() {
     const { enqueueSnackbar } = useSnackbar();
     const handleResponse = useHandleResponse();
     const getGlobalMessages = () => {
@@ -17,12 +17,6 @@ export function useGetGlobalMessages() {
             });
         }
     }
-    return getGlobalMessages;
-}
-// Send a global message
-export function useSendGlobalMessage() {
-    const { enqueueSnackbar } = useSnackbar();
-    const handleResponse = useHandleResponse();
     const sendGlobalMessage = body => {
         try {
             return axios.post(
@@ -36,13 +30,6 @@ export function useSendGlobalMessage() {
             });
         }
     };
-    return sendGlobalMessage;
-}
-
-// Get list of users conversations
-export function useGetConversations() {
-    const { enqueueSnackbar } = useSnackbar();
-    const handleResponse = useHandleResponse();
     const getConversations = () => {
         try {
             return axios.get(
@@ -56,15 +43,6 @@ export function useGetConversations() {
             });
         }
     };
-
-    return getConversations;
-}
-
-// get conversation messages based on
-// to and from id's
-export function useGetConversationMessages() {
-    const { enqueueSnackbar } = useSnackbar();
-    const handleResponse = useHandleResponse();
     const getConversationMessages = id => {
         try {
             return axios.get(`${process.env.REACT_APP_API_URL}/api/messages/conversations/query?userId=${id}`,
@@ -77,12 +55,6 @@ export function useGetConversationMessages() {
             });
         };
     }
-    return getConversationMessages;
-}
-
-export function useSendConversationMessage() {
-    const { enqueueSnackbar } = useSnackbar();
-    const handleResponse = useHandleResponse();
     const sendConversationMessage = (id, body) => {
         try {
             return axios.post(`${process.env.REACT_APP_API_URL}/api/messages/`, { to: id, body: body },
@@ -94,6 +66,5 @@ export function useSendConversationMessage() {
             });
         }
     };
-
-    return sendConversationMessage;
+    return { getGlobalMessages, sendConversationMessage, getConversationMessages, getConversations, sendGlobalMessage };
 }
