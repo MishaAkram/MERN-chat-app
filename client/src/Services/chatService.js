@@ -65,3 +65,4 @@ export function useGetPostMessages() {
         }
     };
     return { getGlobalMessages, sendConversationMessage, getConversationMessages, getConversations, sendGlobalMessage };
+}

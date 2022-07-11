@@ -4,7 +4,7 @@ import { useSnackbar } from 'notistack';
 const useHandleResponse = () => {
     const { enqueueSnackbar } = useSnackbar();
     const handleResponse = response => {
-        if (response.statusText != "OK") {
+        if (response.statusText !== "OK") {
             if ([401, 403].indexOf(response.status) !== -1) {
                 authenticationService.logout();
                 enqueueSnackbar('User Unauthorized', {
@@ -16,4 +16,7 @@ const useHandleResponse = () => {
         }
         return response
     }
-    }
+    return handleResponse
+}
+
+export default useHandleResponse

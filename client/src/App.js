@@ -4,6 +4,7 @@ import { createTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/styles';
 import { SnackbarProvider } from 'notistack';
+import { purple } from '@material-ui/core/colors';
 import history from './Utilities/history';
 import PrivateRoute from './Utilities/private-route';
 import Home from './Home/Home';
@@ -11,15 +12,10 @@ import Chat from './Chat/Chat';
 const theme = createTheme({
     palette: {
         primary: {
-            light: '#58a5f0',
-            main: '#0277bd',
-            dark: '#004c8c',
+            main: purple[600],
         },
         secondary: {
-            light: '#ffd95a',
-            main: '#f9a825',
-            dark: '#c17900',
-            contrastText: '#212121',
+            main: purple[600],
         },
         background: {
             default: '#f0f0f0',
