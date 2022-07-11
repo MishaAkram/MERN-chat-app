@@ -2,7 +2,6 @@ import useHandleResponse from '../Utilities/handle-response';
 import authHeader from '../Utilities/auth-header';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
-
 export function useGetPostMessages() {
     const { enqueueSnackbar } = useSnackbar();
     const handleResponse = useHandleResponse();
