@@ -2,7 +2,6 @@ import React, { useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import React, { useState, useEffect } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
@@ -14,10 +13,10 @@ import Users from './Users';
 const useStyles = makeStyles(theme => ({
     paper: {
         minHeight: 'calc(100vh - 64px)',
-        borderRadius: 0,
+        borderRadius: 0.5,
     },
     sidebar: {
-        zIndex: 8,
+        zIndex: 12,
     },
     subheader: {
         display: 'flex',
@@ -30,6 +29,7 @@ const useStyles = makeStyles(theme => ({
     subheaderText: {
         color: theme.palette.primary.dark,
     },
+
 }));
 
 const Chat = () => {
@@ -53,8 +53,8 @@ const Chat = () => {
                                 onChange={handleChange}
                                 variant="fullWidth"
                                 value={tab}
-                                indicatorColor="primary"
-                                textColor="primary"
+                                indicatorColor="secondary"
+                                textColor="secondary"
                             >
                                 <Tab label="Chats" />
                                 <Tab label="Users" />

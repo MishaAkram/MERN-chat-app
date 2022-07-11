@@ -38,7 +38,7 @@ const Users = (props) => {
 
   useEffect(() => {
     getUsers().then((res) => setUsers(res.data));
-  }, [newUser]);
+  }, [newUser, getUsers]);
 
   useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_API_URL);

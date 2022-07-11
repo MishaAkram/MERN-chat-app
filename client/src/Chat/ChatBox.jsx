@@ -20,7 +20,7 @@ import { Formik } from 'formik';
 const useStyles = makeStyles((theme) => ({
   root: { height: "100%", },
   headerRow: { maxHeight: 60, zIndex: 5, },
-  paper: { display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: theme.palette.primary.dark, },
+  paper: { display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: theme.palette.secondary.dark, },
   messageContainer: { height: "100%", display: "flex", alignContent: "flex-end", },
   messagesRow: { maxHeight: "calc(100vh - 184px)", overflowY: "auto", },
   newMessageRow: { width: "100%", padding: theme.spacing(0, 2, 1), },
@@ -91,7 +91,7 @@ const ChatBox = ({ scope, conversationId, user }) => {
       <Grid container className={classes.root}>
         <Grid item xs={12} className={classes.headerRow}>
           <Paper className={classes.paper} square elevation={2}>
-            <Typography color="inherit" variant="h6">
+            <Typography color="secondary" variant="h6">
               {scope}
             </Typography>
           </Paper>
@@ -132,7 +132,7 @@ const ChatBox = ({ scope, conversationId, user }) => {
               <div ref={chatBottom} />
             </Grid>
             <Grid item xs={12} className={classes.inputRow}>
-              <form  className={classes.form}>
+              <form className={classes.form}>
                 <Grid
                   container
                   className={classes.newMessageRow}

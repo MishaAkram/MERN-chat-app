@@ -30,13 +30,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Conversations = (props) => {
+const Conversations = ({ setScope, setUser }) => {
   const classes = useStyles();
   const [conversations, setConversations] = useState([]);
   const [newConversation, setNewConversation] = useState(null);
   const { getConversations } = useGetPostMessages();
-  // Returns the recipient name that does not
-  // belong to the current user.
   const handleRecipient = (recipients) => {
     for (let i = 0; i < recipients.length; i++) {
       if (
@@ -67,7 +65,7 @@ const Conversations = (props) => {
       <ListItem
         classes={{ root: classes.subheader }}
         onClick={() => {
-          props.setScope("Global Chat");
+          setScope("Global Chat");
         }}
       >
         <ListItemAvatar>
@@ -78,17 +76,16 @@ const Conversations = (props) => {
         <ListItemText className={classes.subheaderText} primary="Global Chat" />
       </ListItem>
       <Divider />
-
       {conversations && (
-        <React.Fragment>
+        <>
           {conversations.map((c) => (
             <ListItem
               className={classes.listItem}
               key={c._id}
               button
               onClick={() => {
-                props.setUser(handleRecipient(c.recipientObj));
-                props.setScope(handleRecipient(c.recipientObj).name);
+                setUser(handleRecipient(c.recipientObj));
+                setScope(handleRecipient(c.recipientObj).name);
               }}
             >
               <ListItemAvatar>
@@ -104,7 +101,7 @@ const Conversations = (props) => {
               />
             </ListItem>
           ))}
-        </React.Fragment>
+        </>
       )}
     </List>
   );
