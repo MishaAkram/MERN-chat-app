@@ -3,7 +3,6 @@ import authHeader from '../Utilities/auth-header';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
 
-// Receive global messages
 export function useGetPostMessages() {
     const { enqueueSnackbar } = useSnackbar();
     const handleResponse = useHandleResponse();

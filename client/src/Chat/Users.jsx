@@ -6,7 +6,6 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import socketIOClient from "socket.io-client";
-
 import { useGetUsers } from "../Services/userService";
 import commonUtilites from "../Utilities/common";
 
@@ -51,7 +50,7 @@ const Users = (props) => {
   return (
     <List className={classes.list}>
       {users && (
-        <React.Fragment>
+        <>
           {users.map((u) => (
             <ListItem
               className={classes.listItem}
@@ -68,7 +67,7 @@ const Users = (props) => {
               <ListItemText primary={u.name} />
             </ListItem>
           ))}
-        </React.Fragment>
+        </>
       )}
     </List>
   );
