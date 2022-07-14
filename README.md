@@ -1,1 +1,1 @@
-# DC-project
+# Realtime Chat Application
