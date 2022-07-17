@@ -18,7 +18,7 @@ export function useGetPostMessages() {
     const sendGlobalMessage = body => {
         try {
             return axios.post(
-                `${process.env.REACT_APP_API_URL}/api/messages/global`, body,
+                `${process.env.REACT_APP_API_URL}/api/messages/global`,{ body: body, global: true },
                 { headers: authHeader() }
             )
                 .then(handleResponse)
