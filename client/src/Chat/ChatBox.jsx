@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ChatBox = ({ scope, conversationId, user }) => {
   const [currentUserId] = useState(authenticationService.currentUserValue.userId);
-  const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [lastMessage, setLastMessage] = useState(null);
   const { getGlobalMessages, sendGlobalMessage, getConversationMessages, sendConversationMessage } = useGetPostMessages();
@@ -71,15 +70,14 @@ const ChatBox = ({ scope, conversationId, user }) => {
 
   useEffect(scrollToBottom, [messages]);
 
-  const handleSubmit = (values) => {
-    // e.preventDefault();
-    alert(JSON.stringify(values, null, 2));
+  const handleSubmit = (values, { resetForm }) => {
     if (scope === "Global Chat") {
       sendGlobalMessage(values.message).then(() => {
+        resetForm();
       });
     } else {
       sendConversationMessage(user._id, values.message).then((res) => {
-        // setNewMessage("");
+        resetForm();
       });
     }
   };
@@ -87,12 +85,12 @@ const ChatBox = ({ scope, conversationId, user }) => {
   return (
     <Formik
       initialValues={{ message: "" }}
-      onSubmit={(values, { setSubmitting }) => {
-        handleSubmit(values);
+      onSubmit={(values, { setSubmitting, resetForm }) => {
+        handleSubmit(values, { resetForm });
         setSubmitting(false);
       }
       }
-    >{({ values, isSubmitting }) => (
+    >{() => (
       <Form noValidate className={classes.form}>
         <Grid container className={classes.root}>
           <Grid item xs={12} className={classes.headerRow}>
