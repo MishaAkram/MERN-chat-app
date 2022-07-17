@@ -16,7 +16,7 @@ import classnames from "classnames";
 import commonUtilites from "../Utilities/common";
 import { useGetPostMessages } from "../Services/chatService";
 import { authenticationService } from "../Services/authenticationService";
-import { Formik } from 'formik';
+import { Formik, Form, useField } from 'formik';
 const useStyles = makeStyles((theme) => ({
   root: { height: "100%", },
   headerRow: { maxHeight: 60, zIndex: 5, },
@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ChatBox = ({ scope, conversationId, user }) => {
   const [currentUserId] = useState(authenticationService.currentUserValue.userId);
-  const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [lastMessage, setLastMessage] = useState(null);
   const { getGlobalMessages, sendGlobalMessage, getConversationMessages, sendConversationMessage } = useGetPostMessages();
@@ -71,82 +70,83 @@ const ChatBox = ({ scope, conversationId, user }) => {
 
   useEffect(scrollToBottom, [messages]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (values, { resetForm }) => {
     if (scope === "Global Chat") {
-      sendGlobalMessage(newMessage).then(() => {
-        setNewMessage("");
+      sendGlobalMessage(values.message).then(() => {
+        resetForm();
       });
     } else {
-      sendConversationMessage(user._id, newMessage).then((res) => {
-        setNewMessage("");
+      sendConversationMessage(user._id, values.message).then((res) => {
+        resetForm();
       });
     }
   };
 
   return (
     <Formik
-      onSubmit={handleSubmit}
-    >
-      <Grid container className={classes.root}>
-        <Grid item xs={12} className={classes.headerRow}>
-          <Paper className={classes.paper} square elevation={2}>
-            <Typography color="secondary" variant="h6">
-              {scope}
-            </Typography>
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container className={classes.messageContainer}>
-            <Grid item xs={12} className={classes.messagesRow}>
-              {messages && (
-                <List>
-                  {messages.map((m) => (
-                    <ListItem
-                      key={m._id}
-                      className={classnames(classes.listItem, {
-                        [`${classes.listItemRight}`]:
-                          m.fromObj[0]._id === currentUserId,
-                      })}
-                      alignItems="flex-start"
-                    >
-                      <ListItemAvatar className={classes.avatar}>
-                        <Avatar>
-                          {commonUtilites.getInitialsFromName(m.fromObj[0].name)}
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        classes={{
-                          root: classnames(classes.messageBubble, {
-                            [`${classes.messageBubbleRight}`]:
-                              m.fromObj[0]._id === currentUserId,
-                          }),
-                        }}
-                        primary={m.fromObj[0] && m.fromObj[0].name}
-                        secondary={<React.Fragment>{m.body}</React.Fragment>}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              )}
-              <div ref={chatBottom} />
-            </Grid>
-            <Grid item xs={12} className={classes.inputRow}>
-              <form className={classes.form}>
+      initialValues={{ message: "" }}
+      onSubmit={(values, { setSubmitting, resetForm }) => {
+        handleSubmit(values, { resetForm });
+        setSubmitting(false);
+      }
+      }
+    >{() => (
+      <Form noValidate className={classes.form}>
+        <Grid container className={classes.root}>
+          <Grid item xs={12} className={classes.headerRow}>
+            <Paper className={classes.paper} square elevation={2}>
+              <Typography color="secondary" variant="h6">
+                {scope}
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container className={classes.messageContainer}>
+              <Grid item xs={12} className={classes.messagesRow}>
+                {messages && (
+                  <List>
+                    {messages.map((m) => (
+                      <ListItem
+                        key={m._id}
+                        className={classnames(classes.listItem, {
+                          [`${classes.listItemRight}`]:
+                            m.fromObj[0]._id === currentUserId,
+                        })}
+                        alignItems="flex-start"
+                      >
+                        <ListItemAvatar className={classes.avatar}>
+                          <Avatar>
+                            {commonUtilites.getInitialsFromName(m.fromObj[0].name)}
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          classes={{
+                            root: classnames(classes.messageBubble, {
+                              [`${classes.messageBubbleRight}`]:
+                                m.fromObj[0]._id === currentUserId,
+                            }),
+                          }}
+                          primary={m.fromObj[0] && m.fromObj[0].name}
+                          secondary={<React.Fragment>{m.body}</React.Fragment>}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                )}
+                <div ref={chatBottom} />
+              </Grid>
+              <Grid item xs={12} className={classes.inputRow}>
                 <Grid
                   container
                   className={classes.newMessageRow}
                   alignItems="flex-end"
                 >
                   <Grid item xs={11}>
-                    <TextField
+                    <MyTextField
                       id="message"
                       label="Message"
-                      variant="outlined"
-                      margin="dense"
+                      name="message"
                       fullWidth
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={1}>
@@ -155,13 +155,42 @@ const ChatBox = ({ scope, conversationId, user }) => {
                     </IconButton>
                   </Grid>
                 </Grid>
-              </form>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </Formik>
+      </Form>
+    )}
+    </Formik >
   );
 };
 
 export default ChatBox;
+
+export const MyTextField = ({ placeholder, label, onChange, value, type, autoFillOff, required, multiple, rows, onBlur, disabled = false, inputProps = { min: 0, step: ".0001" }, ...props }) => {
+  const [field, meta] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : "";
+  return (
+    <div className="form-group">
+      <TextField
+        size="small"
+        fullWidth
+        multiline={multiple || false}
+        rows={rows || 0}
+        variant="outlined"
+        type={type}
+        disabled={disabled}
+        label={label}
+        placeholder={placeholder}
+        autoComplete={autoFillOff && "new-password"}
+        required={required}
+        helperText={errorText}
+        error={!!errorText}
+        inputProps={inputProps}
+        {...field}
+        onBlur={onBlur}
+        onKeyUp={onChange}
+      />
+    </div>
+  );
+}
