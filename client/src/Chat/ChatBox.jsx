@@ -17,6 +17,7 @@ import commonUtilites from "../Utilities/common";
 import { useGetPostMessages } from "../Services/chatService";
 import { authenticationService } from "../Services/authenticationService";
 import { Formik, Form, useField } from 'formik';
+import * as yup from "yup";
 const useStyles = makeStyles((theme) => ({
   root: { height: "100%", },
   headerRow: { maxHeight: 60, zIndex: 5, },
@@ -85,13 +86,16 @@ const ChatBox = ({ scope, conversationId, user }) => {
   return (
     <Formik
       initialValues={{ message: "" }}
+      validationSchema={yup.object().shape({
+        message: yup.string().required("Message is required"),
+      })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         handleSubmit(values, { resetForm });
         setSubmitting(false);
-      }
-      }
+      }      }
     >{() => (
-      <Form noValidate className={classes.form}>
+      <Form noValidate>
+        <div className={classes.form}>
         <Grid container className={classes.root}>
           <Grid item xs={12} className={classes.headerRow}>
             <Paper className={classes.paper} square elevation={2}>
@@ -159,6 +163,7 @@ const ChatBox = ({ scope, conversationId, user }) => {
             </Grid>
           </Grid>
         </Grid>
+        </div>
       </Form>
     )}
     </Formik >
@@ -176,7 +181,7 @@ export const MyTextField = ({ placeholder, label, onChange, value, type, autoFil
         size="small"
         fullWidth
         multiline={multiple || false}
-        rows={rows || 0}
+        minRows={rows || 0}
         variant="outlined"
         type={type}
         disabled={disabled}
