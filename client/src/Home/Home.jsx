@@ -28,9 +28,15 @@ const Home = () => {
     }
 
     return (
-        <Container component="main" maxWidth="xs">
+        <div style={{
+            background: "linear-gradient(#e66465, #9198e5)",
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            width: '100vw',
+            height: '100vh'
+        }} >
             {Content}
-        </Container>
+        </div>
     );
 };
 
