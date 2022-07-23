@@ -29,11 +29,13 @@ const useStyles = makeStyles(theme => ({
 
 const Register = props => {
     const register = useRegister();
-
     const classes = useStyles();
-
+    const paperStyle = {
+        maxWidth: "330px", margin: "0 auto", marginTop: "30px", padding: "20px", flexDirection: "column", alignItems: "center",
+        justifyContent: "center", display: "flex", background: "white", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"
+    };
     return (
-        <div className={classes.paper}>
+        <div style={paperStyle}>
             <Grid container>
                 <Grid item>
                     <Typography component="h1" variant="h5" align="center">
@@ -86,13 +88,7 @@ const Register = props => {
                         validateOnChange={false}
                         validateOnBlur={false}
                     >
-                        {({
-                            handleSubmit,
-                            handleChange,
-                            values,
-                            touched,
-                            isValid,
-                            errors,
+                        {({ handleSubmit, handleChange, values, touched, errors,
                         }) => (
                             <form
                                 onSubmit={handleSubmit}
@@ -103,6 +99,7 @@ const Register = props => {
                                     className={classes.textField}
                                     name="name"
                                     label="Name"
+                                    size='small'
                                     fullWidth={true}
                                     variant="outlined"
                                     margin="normal"
@@ -120,6 +117,7 @@ const Register = props => {
                                     label="Username"
                                     fullWidth={true}
                                     variant="outlined"
+                                    size='small'
                                     margin="normal"
                                     required={true}
                                     helperText={
@@ -139,6 +137,7 @@ const Register = props => {
                                     name="password"
                                     label="Password"
                                     fullWidth={true}
+                                    size='small'
                                     variant="outlined"
                                     margin="normal"
                                     required={true}
@@ -158,6 +157,7 @@ const Register = props => {
                                     id="password2"
                                     className={classes.textField}
                                     name="password2"
+                                    size='small'
                                     label="Confirm Password"
                                     fullWidth={true}
                                     variant="outlined"
