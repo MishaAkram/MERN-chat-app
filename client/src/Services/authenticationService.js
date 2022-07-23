@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { useSnackbar } from 'notistack';
-
+import axios from 'axios';
 import useHandleResponse from '../Utilities/handle-response';
 
 const currentUserSubject = new BehaviorSubject(
@@ -20,29 +20,21 @@ export function useLogin() {
     const handleResponse = useHandleResponse();
 
     const login = (username, password) => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password }),
-        };
-
-        return fetch(
-            `${process.env.REACT_APP_API_URL}/api/users/login`,
-            requestOptions
-        )
+        return axios.post(`${process.env.REACT_APP_API_URL}/api/users/login`,
+            { username, password }, { headers: { 'Content-Type': 'application/json' } })
             .then(handleResponse)
             .then(user => {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                currentUserSubject.next(user);
+                console.log(user)
+                localStorage.setItem('currentUser', JSON.stringify(user.data));
+                currentUserSubject.next(user.data);
                 return user;
             })
-            .catch(function() {
+            .catch(function () {
                 enqueueSnackbar('Failed to Login', {
                     variant: 'error',
                 });
             });
     };
-
     return login;
 }
 
@@ -51,24 +43,17 @@ export function useRegister() {
     const handleResponse = useHandleResponse();
 
     const register = (name, username, password, password2) => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, username, password, password2 }),
-        };
-
-        return fetch(
-            `${process.env.REACT_APP_API_URL}/api/users/register`,
-            requestOptions
-        )
+        return axios.post(`${process.env.REACT_APP_API_URL}/api/users/register`,
+            { name, username, password, password2 }, { headers: { 'Content-Type': 'application/json' } })
             .then(handleResponse)
             .then(user => {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                currentUserSubject.next(user);
+                console.log(user)
+                localStorage.setItem('currentUser', JSON.stringify(user.data));
+                currentUserSubject.next(user.data);
 
                 return user;
             })
-            .catch(function(response) {
+            .catch(function (response) {
                 if (response) {
                     enqueueSnackbar(response, {
                         variant: 'error',
