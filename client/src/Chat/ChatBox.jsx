@@ -103,7 +103,7 @@ const ChatBox = ({ scope, conversationId, user }) => {
           setMessages(res.data);
         });
     } else if (scope !== null && conversationId !== null) {
-      getConversationMessages(user._id).then((res) => setMessages(res));
+      getConversationMessages(user._id).then((res) => setMessages(res.data));
     } else {
       setMessages([]);
     }
@@ -139,6 +139,7 @@ const ChatBox = ({ scope, conversationId, user }) => {
       <Grid item xs={12}>
         <Grid container className={classes.messageContainer}>
           <Grid item xs={12} className={classes.messagesRow}>
+            {console.log(messages)}
             {messages && (
               <List>
                 {messages.map((m) => (
