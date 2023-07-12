@@ -1,1 +1,1 @@
-# Realtime Chat Application using NERN Stack
+# Realtime Chat Application using MERN Stack
